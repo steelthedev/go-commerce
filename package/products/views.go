@@ -256,3 +256,46 @@ func (h handler) GetSingleProduct(c *gin.Context) {
 		"state":   false,
 	})
 }
+
+func (h handler) GetUserProduct(c *gin.Context) {
+	// var user models.User
+	var shop models.Shops
+	var products []models.Product
+
+	user_id, err := tokens.ExtractTokenID(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "You need to be authorized",
+			"state":   false,
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// if result := h.DB.Where("ID", user_id).First(&user); result.Error != nil {
+	// 	c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+	// 		"message": "user object not found",
+	// 		"state":   false,
+	// 	})
+	// 	return
+	// }
+
+	if result := h.DB.Where("user_id = ?", user_id).First(&shop); result.Error != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+			"message": "Shop object not found",
+			"state":   false,
+		})
+		return
+	}
+
+	if result := h.DB.Where("shop_id = ?", shop.ID).Find(&products); result.Error != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+			"message": "Product objects not found",
+			"state":   false,
+		})
+		return
+	}
+
+	c.IndentedJSON(200, &products)
+
+}

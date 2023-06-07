@@ -6,6 +6,7 @@ import (
 	"github.com/steelthedev/go-commerce/connections/models"
 	"github.com/steelthedev/go-commerce/connections/tokens"
 	"github.com/steelthedev/go-commerce/package/accounts"
+	"github.com/steelthedev/go-commerce/package/helpers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,6 +57,18 @@ func (h handler) CreateShop(c *gin.Context) {
 	shop.Name = body.Name
 	shop.User = user
 	shop.UserId = user_id
+
+	image, err := helpers.AddSingleImage(c, "image")
+
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{
+			"message": "Bad request",
+			"state":   false,
+			"error":   err.Error(),
+		})
+	}
+
+	shop.Image = image
 
 	if result := h.DB.Create(&shop); result.Error != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{

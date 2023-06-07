@@ -68,4 +68,5 @@ type Shops struct {
 	Name   string `json:"shop_name"`
 	User   User   `json:"owner"`
 	UserId uint   `json:"user_id"`
+	Image  string `json:"image"`
 }

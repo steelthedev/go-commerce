@@ -18,4 +18,5 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 
 	routes.POST("/create", h.CreateShop)
 	routes.GET("/get-all", h.GetAllShops)
+
 }

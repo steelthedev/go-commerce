@@ -21,5 +21,6 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 	routes.POST("/category/create", h.CreateCategory)
 	routes.GET("category/get/:id", h.GetCategory)
 	routes.GET("category/get-all", h.GetAllcategory)
+	routes.GET("/get-user-products", h.GetUserProduct)
 
 }
