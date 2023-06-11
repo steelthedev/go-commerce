@@ -299,3 +299,62 @@ func (h handler) GetUserProduct(c *gin.Context) {
 	c.IndentedJSON(200, &products)
 
 }
+
+func (h handler) DeleteProduct(c *gin.Context) {
+	var shop models.Shops
+	var product models.Product
+
+	_, err := accounts.IsAuthenticated(c)
+
+	if err != nil {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "You are not authorized",
+			"state":   false,
+		})
+		return
+	}
+
+	userId, err := tokens.ExtractTokenID(c)
+
+	if err != nil {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "An error occured, userId not found",
+			"state":   false,
+		})
+		return
+	}
+
+	if result := h.DB.Where("user_id = ?", userId).First(&shop); result.Error != nil {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "An error occured, Shop Owner not found",
+			"state":   false,
+		})
+		return
+	}
+
+	product_id, _ := c.Params.Get("id")
+
+	//check for product in shop products
+
+	if result := h.DB.Preload("Shop").Where("ID=?", product_id).First(&product); result.Error != nil {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "Product not found in this shop",
+			"state":   false,
+		})
+		return
+	}
+
+	if result := h.DB.Delete(&product); result.Error != nil {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "An error occured",
+			"state":   false,
+		})
+		return
+	}
+
+	c.IndentedJSON(200, gin.H{
+		"message": "Product deleted successfully",
+		"state":   false,
+	})
+
+}

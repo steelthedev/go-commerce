@@ -15,7 +15,13 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 	}
 
 	routes := router.Group("products")
+
+	//Post urls
+
 	routes.POST("/create", h.CreateProduct)
+	routes.POST("/delete-product/:id", h.DeleteProduct)
+
+	//get urls
 	routes.GET("/get-all", h.GetAllProducts)
 	routes.GET("/get/:id", h.GetSingleProduct)
 	routes.POST("/category/create", h.CreateCategory)
