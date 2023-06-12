@@ -11,8 +11,17 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/cors"
+	_ "github.com/steelthedev/go-commerce/docs"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title An ecommerce Api
+// @version 1.0
+// @description A golang microservice for ecommerce
+
+// @host 	localhost:8000
+// @BasePath /
 func main() {
 
 	// dbURL := string(os.Getenv("DB_URL"))
@@ -23,6 +32,8 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"data": "Welcome to marketplace"})
 	})
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Use(func(c *gin.Context) {
 		cors.New(cors.Options{
@@ -36,6 +47,5 @@ func main() {
 	accounts.RegisterRoutes(router, dbHandler)
 	products.RegisterRoutes(router, dbHandler)
 	shops.RegisterRoutes(router, dbHandler)
-
 	router.Run(":8000")
 }

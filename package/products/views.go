@@ -223,6 +223,14 @@ func (h handler) CreateProduct(c *gin.Context) {
 
 }
 
+// GetAllProducts godoc
+// @Summary Get all Products
+// @Description Retrieve a list of all products
+// @Tags Products
+// @Produce json
+// @Success 200 {array} ProductSerializer
+// @Failure 404
+// @Router /products/get-all [get]
 func (h handler) GetAllProducts(c *gin.Context) {
 	var products []models.Product
 
@@ -300,6 +308,7 @@ func (h handler) GetUserProduct(c *gin.Context) {
 
 }
 
+// CreateTags godoc
 func (h handler) DeleteProduct(c *gin.Context) {
 	var shop models.Shops
 	var product models.Product

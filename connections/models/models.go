@@ -2,12 +2,9 @@ package models
 
 import (
 	"github.com/lib/pq"
-	"gorm.io/gorm"
 )
 
 type User struct {
-	gorm.Model
-
 	ID           uint   `gorm:"primary_key;index:idx_name,unique"`
 	FirstName    string `json:"first_name" validate:"required,min=2,max=40"`
 	LastName     string `json:"last_name" validate:"required,min=2,max=40"`
@@ -19,7 +16,6 @@ type User struct {
 }
 
 type Product struct {
-	gorm.Model
 	ID          uint           `gorm:"primary_key;index:idx_name,unique"`
 	Title       string         `json:"title" validate:"required, min=2 max=40"`
 	Description string         `json:"description" validate:"required"`
@@ -32,8 +28,6 @@ type Product struct {
 }
 
 type Order struct {
-	gorm.Model
-
 	ID     uint        `gorm:"primary_key;index:idx_name,unique"`
 	User   User        `json:"user"`
 	UserID uint        `json:"user_id"`
@@ -42,8 +36,6 @@ type Order struct {
 }
 
 type OrderItem struct {
-	gorm.Model
-
 	ID        uint    `gorm:"primary_key;index:idx_name,unique"`
 	User      User    `json:"user"`
 	UserID    uint    `json:"user_id"`
@@ -55,15 +47,11 @@ type OrderItem struct {
 }
 
 type Categories struct {
-	gorm.Model
-
 	ID    uint   `gorm:"primary_key;index:idx_name,unique"`
 	Title string `json:"title"`
 }
 
 type Shops struct {
-	gorm.Model
-
 	ID     uint   `gorm:"primary_key;index:idx_name,unique"`
 	Name   string `json:"shop_name"`
 	User   User   `json:"owner"`

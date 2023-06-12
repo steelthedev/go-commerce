@@ -3,14 +3,22 @@ package shops
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+
 	"github.com/steelthedev/go-commerce/connections/models"
 	"github.com/steelthedev/go-commerce/connections/tokens"
 	"github.com/steelthedev/go-commerce/package/accounts"
 	"github.com/steelthedev/go-commerce/package/helpers"
-
-	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Create a new shop using
+// @Description  New shop using json request body
+// @Tags         shops
+// @Accept       json
+// @Produce      json
+// @Param        name   path      string  true  "Shops Name"
+// @Success      200  {object} ShopsSerializer
+// @Router       /shops/create [post]
 func (h handler) CreateShop(c *gin.Context) {
 
 	body := ShopsSerializer{}
@@ -81,6 +89,14 @@ func (h handler) CreateShop(c *gin.Context) {
 
 }
 
+// GetAllShops godoc
+// @Summary Get all shops
+// @Description Retrieve a list of all shops
+// @Tags shops
+// @Produce json
+// @Success 200 {array} ShopsSerializer
+// @Failure 404
+// @Router /shops/get-all [get]
 func (h handler) GetAllShops(c *gin.Context) {
 
 	var shops []models.Shops

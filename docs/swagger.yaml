@@ -1,0 +1,148 @@
+basePath: /
+definitions:
+  models.Categories:
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.Shops:
+    properties:
+      id:
+        type: integer
+      image:
+        type: string
+      owner:
+        $ref: '#/definitions/models.User'
+      shop_name:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      first_name:
+        maxLength: 40
+        minLength: 2
+        type: string
+      id:
+        type: integer
+      last_name:
+        maxLength: 40
+        minLength: 2
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      refresh_token:
+        type: string
+      token:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    type: object
+  products.ProductSerializer:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      main_image:
+        type: string
+      price:
+        type: integer
+      product_category:
+        items:
+          $ref: '#/definitions/models.Categories'
+        type: array
+      shop:
+        $ref: '#/definitions/models.Shops'
+      sub_images:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    required:
+    - title
+    type: object
+  shops.ShopsSerializer:
+    properties:
+      id:
+        type: integer
+      image:
+        type: string
+      shop_name:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: A golang microservice for ecommerce
+  title: An ecommerce Api
+  version: "1.0"
+paths:
+  /products/get-all:
+    get:
+      description: Retrieve a list of all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/products.ProductSerializer'
+            type: array
+        "404":
+          description: Not Found
+      summary: Get all Products
+      tags:
+      - Products
+  /shops/create:
+    post:
+      consumes:
+      - application/json
+      description: New shop using json request body
+      parameters:
+      - description: Shops Name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/shops.ShopsSerializer'
+      summary: Create a new shop using
+      tags:
+      - shops
+  /shops/get-all:
+    get:
+      description: Retrieve a list of all shops
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/shops.ShopsSerializer'
+            type: array
+        "404":
+          description: Not Found
+      summary: Get all shops
+      tags:
+      - shops
+swagger: "2.0"
