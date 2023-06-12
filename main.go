@@ -7,7 +7,7 @@ import (
 
 	"github.com/steelthedev/go-commerce/package/accounts"
 	"github.com/steelthedev/go-commerce/package/products"
-	"github.com/steelthedev/go-commerce/package/shops"
+	"github.com/steelthedev/go-commerce/package/stores"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/cors"
@@ -46,6 +46,6 @@ func main() {
 	router.Static("/images", "../images")
 	accounts.RegisterRoutes(router, dbHandler)
 	products.RegisterRoutes(router, dbHandler)
-	shops.RegisterRoutes(router, dbHandler)
+	stores.RegisterRoutes(router, dbHandler)
 	router.Run(":8000")
 }

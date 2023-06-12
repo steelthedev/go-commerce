@@ -42,9 +42,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/shops/create": {
+        "/stores/create": {
             "post": {
-                "description": "New shop using json request body",
+                "description": "New store using json request body",
                 "consumes": [
                     "application/json"
                 ],
@@ -52,13 +52,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "shops"
+                    "Stores"
                 ],
-                "summary": "Create a new shop using",
+                "summary": "Create a new store using",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Shops Name",
+                        "description": "Stores Name",
                         "name": "name",
                         "in": "path",
                         "required": true
@@ -68,31 +68,60 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/shops.ShopsSerializer"
+                            "$ref": "#/definitions/stores.StoresSerializer"
                         }
                     }
                 }
             }
         },
-        "/shops/get-all": {
+        "/stores/get-all": {
             "get": {
-                "description": "Retrieve a list of all shops",
+                "description": "Retrieve a list of all Stores",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "shops"
+                    "Stores"
                 ],
-                "summary": "Get all shops",
+                "summary": "Get all Stores",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/shops.ShopsSerializer"
+                                "$ref": "#/definitions/stores.StoresSerializer"
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/stores/get-user-store": {
+            "get": {
+                "description": "Retrieve a the store belonging to a logged in user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stores"
+                ],
+                "summary": "Get a user store",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/stores.StoresSerializer"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     },
                     "404": {
                         "description": "Not Found"
@@ -102,6 +131,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "accounts.UserSerializer": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Categories": {
             "type": "object",
             "properties": {
@@ -113,7 +159,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Shops": {
+        "models.Stores": {
             "type": "object",
             "properties": {
                 "id": {
@@ -125,7 +171,7 @@ const docTemplate = `{
                 "owner": {
                     "$ref": "#/definitions/models.User"
                 },
-                "shop_name": {
+                "store_name": {
                     "type": "string"
                 },
                 "user_id": {
@@ -197,8 +243,8 @@ const docTemplate = `{
                         "$ref": "#/definitions/models.Categories"
                     }
                 },
-                "shop": {
-                    "$ref": "#/definitions/models.Shops"
+                "store": {
+                    "$ref": "#/definitions/models.Stores"
                 },
                 "sub_images": {
                     "type": "array",
@@ -211,7 +257,7 @@ const docTemplate = `{
                 }
             }
         },
-        "shops.ShopsSerializer": {
+        "stores.StoresSerializer": {
             "type": "object",
             "properties": {
                 "id": {
@@ -220,7 +266,10 @@ const docTemplate = `{
                 "image": {
                     "type": "string"
                 },
-                "shop_name": {
+                "owner": {
+                    "$ref": "#/definitions/accounts.UserSerializer"
+                },
+                "store_name": {
                     "type": "string"
                 }
             }

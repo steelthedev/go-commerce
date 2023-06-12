@@ -9,7 +9,7 @@ type CreateProduct struct {
 	Price       float64             `json:"price"`
 	MainImage   string              `json:"main_image"`
 	SubImages   []string            `json:"sub_images"`
-	Shop        models.Shops        `json:"shop"`
+	Shop        models.Stores       `json:"store"`
 	Category    []models.Categories `json:"category"`
 	Description string              `json:"description"`
 }
@@ -21,7 +21,7 @@ type ProductSerializer struct {
 	Price       uint64              `json:"price"`
 	MainImage   string              `json:"main_image"`
 	SubImages   []string            `json:"sub_images"`
-	Shop        models.Shops        `json:"shop"`
+	Shop        models.Stores       `json:"store"`
 	Description string              `json:"description"`
 }
 

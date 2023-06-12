@@ -95,7 +95,7 @@ func (h handler) CreateProduct(c *gin.Context) {
 
 	var product models.Product
 	var category models.Categories
-	var shop models.Shops
+	var Store models.Stores
 	var err error
 	var user models.User
 
@@ -196,9 +196,9 @@ func (h handler) CreateProduct(c *gin.Context) {
 
 	}
 
-	if err := h.DB.Where("user_id=?", user.ID).First(&shop).Error; err != nil {
+	if err := h.DB.Where("user_id=?", user.ID).First(&Store).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-			"message": "Shop not found",
+			"message": "Store not found",
 			"state":   false,
 		})
 
@@ -206,7 +206,7 @@ func (h handler) CreateProduct(c *gin.Context) {
 	}
 
 	body.Category = append(category_, category)
-	body.Shop = shop
+	body.Store = Store
 
 	if result := h.DB.Create(&body); result.Error != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -234,7 +234,7 @@ func (h handler) CreateProduct(c *gin.Context) {
 func (h handler) GetAllProducts(c *gin.Context) {
 	var products []models.Product
 
-	if err := h.DB.Preload("Category").Preload("Shop").Preload(("Shop.User")).Find(&products).Error; err != nil {
+	if err := h.DB.Preload("Category").Preload("Store").Preload(("Store.User")).Find(&products).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"message": "Not found",
 			"state":   false,
@@ -267,7 +267,7 @@ func (h handler) GetSingleProduct(c *gin.Context) {
 
 func (h handler) GetUserProduct(c *gin.Context) {
 	// var user models.User
-	var shop models.Shops
+	var Store models.Stores
 	var products []models.Product
 
 	user_id, err := tokens.ExtractTokenID(c)
@@ -280,23 +280,15 @@ func (h handler) GetUserProduct(c *gin.Context) {
 		return
 	}
 
-	// if result := h.DB.Where("ID", user_id).First(&user); result.Error != nil {
-	// 	c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-	// 		"message": "user object not found",
-	// 		"state":   false,
-	// 	})
-	// 	return
-	// }
-
-	if result := h.DB.Where("user_id = ?", user_id).First(&shop); result.Error != nil {
+	if result := h.DB.Where("user_id = ?", user_id).First(&Store); result.Error != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-			"message": "Shop object not found",
+			"message": "Store object not found",
 			"state":   false,
 		})
 		return
 	}
 
-	if result := h.DB.Where("shop_id = ?", shop.ID).Find(&products); result.Error != nil {
+	if result := h.DB.Where("Store_id = ?", Store.ID).Find(&products); result.Error != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"message": "Product objects not found",
 			"state":   false,
@@ -310,7 +302,7 @@ func (h handler) GetUserProduct(c *gin.Context) {
 
 // CreateTags godoc
 func (h handler) DeleteProduct(c *gin.Context) {
-	var shop models.Shops
+	var Store models.Stores
 	var product models.Product
 
 	_, err := accounts.IsAuthenticated(c)
@@ -333,9 +325,9 @@ func (h handler) DeleteProduct(c *gin.Context) {
 		return
 	}
 
-	if result := h.DB.Where("user_id = ?", userId).First(&shop); result.Error != nil {
+	if result := h.DB.Where("user_id = ?", userId).First(&Store); result.Error != nil {
 		c.AbortWithStatusJSON(401, gin.H{
-			"message": "An error occured, Shop Owner not found",
+			"message": "An error occured, Store Owner not found",
 			"state":   false,
 		})
 		return
@@ -343,11 +335,11 @@ func (h handler) DeleteProduct(c *gin.Context) {
 
 	product_id, _ := c.Params.Get("id")
 
-	//check for product in shop products
+	//check for product in Store products
 
-	if result := h.DB.Preload("Shop").Where("ID=?", product_id).First(&product); result.Error != nil {
+	if result := h.DB.Preload("Store").Where("ID=?", product_id).First(&product); result.Error != nil {
 		c.AbortWithStatusJSON(401, gin.H{
-			"message": "Product not found in this shop",
+			"message": "Product not found in this Store",
 			"state":   false,
 		})
 		return

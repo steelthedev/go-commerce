@@ -1,4 +1,4 @@
-package shops
+package stores
 
 import (
 	"github.com/gin-gonic/gin"
@@ -14,9 +14,10 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 		DB: db,
 	}
 
-	routes := router.Group("shops")
+	routes := router.Group("stores")
 
-	routes.POST("/create", h.CreateShop)
-	routes.GET("/get-all", h.GetAllShops)
+	routes.POST("/create", h.CreateStore)
+	routes.GET("/get-all", h.GetAllStores)
+	routes.GET("/get-user-store", h.GetUserStore)
 
 }

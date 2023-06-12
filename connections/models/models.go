@@ -23,8 +23,8 @@ type Product struct {
 	Price       float64        `json:"price"`
 	MainImage   string         `json:"main_image"`
 	SubImages   pq.StringArray `json:"sub_images" gorm:"type:text[]"`
-	Shop        Shops          `json:"shop"`
-	ShopID      uint           `json:"shop_id"`
+	Store       Stores         `json:"store"`
+	StoreID     uint           `json:"store_id"`
 }
 
 type Order struct {
@@ -51,9 +51,9 @@ type Categories struct {
 	Title string `json:"title"`
 }
 
-type Shops struct {
+type Stores struct {
 	ID     uint   `gorm:"primary_key;index:idx_name,unique"`
-	Name   string `json:"shop_name"`
+	Name   string `json:"store_name"`
 	User   User   `json:"owner"`
 	UserId uint   `json:"user_id"`
 	Image  string `json:"image"`
