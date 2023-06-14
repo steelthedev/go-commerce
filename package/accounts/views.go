@@ -11,6 +11,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// @Summary Create Users
+// @Description Endpoint for creating all categories of users
+// @Tags Accounts
+// @Accept json
+// @Produce json
+// @Param body body CreateUser true "SignUp Body Payload"
+// @Success 200 {object} UserSerializer
+// @Failure 400
+// @Failure 302
+// @Success 201
+// @Router       /accounts/signup [post]
 func (h handler) SignUp(c *gin.Context) {
 
 	body := CreateUser{}
@@ -35,10 +46,28 @@ func (h handler) SignUp(c *gin.Context) {
 	user.Email = body.Email
 
 	if result := h.DB.Create(&user); result.Error == nil {
+		user := UserSerializer{
+			Email:     user.Email,
+			ID:        user.ID,
+			FirstName: user.FirstName,
+			LastName:  user.LastName,
+			Phone:     user.Phone,
+		}
+
 		c.IndentedJSON(http.StatusCreated, gin.H{"data": user})
 	}
 }
 
+// @Summary Login
+// @Description Endpoint for log in
+// @Tags Accounts
+// @Accept json
+// @Produce json
+// @Param body body LoginSerializer true "Login Body Payload"
+// @Success 200 {object} UserSerializer
+// @Failure 400
+// @Success 200
+// @Router       /accounts/login [post]
 func (h handler) Login(c *gin.Context) {
 
 	body := LoginSerializer{}
@@ -62,6 +91,14 @@ func (h handler) Login(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"token": token})
 }
 
+// @Summary Get User Profile
+// @Description Endpoint for getting a user based on id
+// @Tags Accounts
+// @Produce json
+// @Param Authorization header string true "Token for Authorization"
+// @Success 200 {object} UserSerializer
+// @Failure 400
+// @Router       /accounts/profile [get]
 func (h handler) GetUser(c *gin.Context) {
 
 	var user models.User
@@ -105,6 +142,6 @@ func (h handler) GetUser(c *gin.Context) {
 		Email:     user.Email,
 	}
 
-	c.IndentedJSON(http.StatusFound, &response)
+	c.IndentedJSON(http.StatusOK, &response)
 
 }

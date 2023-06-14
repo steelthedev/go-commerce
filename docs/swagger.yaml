@@ -1,11 +1,38 @@
 basePath: /
 definitions:
+  accounts.CreateUser:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+    required:
+    - first_name
+    - last_name
+    - password
+    - phone
+    type: object
+  accounts.LoginSerializer:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   accounts.UserSerializer:
     properties:
       email:
         type: string
       first_name:
         type: string
+      id:
+        type: integer
       last_name:
         type: string
       phone:
@@ -103,6 +130,77 @@ info:
   title: An ecommerce Api
   version: "1.0"
 paths:
+  /accounts/login:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint for log in
+      parameters:
+      - description: Login Body Payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/accounts.LoginSerializer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: Login
+      tags:
+      - Accounts
+  /accounts/profile:
+    get:
+      description: Endpoint for getting a user based on id
+      parameters:
+      - description: Token for Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/accounts.UserSerializer'
+        "400":
+          description: Bad Request
+      summary: Get User Profile
+      tags:
+      - Accounts
+  /accounts/signup:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint for creating all categories of users
+      parameters:
+      - description: SignUp Body Payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/accounts.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/accounts.UserSerializer'
+        "201":
+          description: Created
+        "302":
+          description: Found
+        "400":
+          description: Bad Request
+      summary: Create Users
+      tags:
+      - Accounts
   /products/get-all:
     get:
       description: Retrieve a list of all products
