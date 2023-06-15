@@ -1,3 +1,4 @@
 token
 images/
 tmp/
+.env

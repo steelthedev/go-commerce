@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/steelthedev/go-commerce/connections/db"
 
@@ -24,8 +25,8 @@ import (
 // @BasePath /
 func main() {
 
-	// dbURL := string(os.Getenv("DB_URL"))
-	dbURL := "postgres://steel:akinwumi1914@localhost:5432/marketplace"
+	dbURL := string(os.Getenv("DB_URL"))
+
 	router := gin.Default()
 	dbHandler := db.Init(dbURL)
 
