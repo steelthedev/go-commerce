@@ -1,18 +1,14 @@
 package models
 
-import (
-	"github.com/lib/pq"
-)
+import "github.com/lib/pq"
 
 type User struct {
-	ID           uint   `gorm:"primary_key;index:idx_name,unique"`
-	FirstName    string `json:"first_name" validate:"required,min=2,max=40"`
-	LastName     string `json:"last_name" validate:"required,min=2,max=40"`
-	Password     string `json:"password" validate:"required"`
-	Email        string `json:"email" validate:"required,email"`
-	Phone        string `json:"phone" validate:"required"`
-	Token        string `json:"token"`
-	RefreshToken string `json:"refresh_token"`
+	ID        uint   `gorm:"primary_key;index:idx_name,unique"`
+	FirstName string `json:"first_name" validate:"required,min=2,max=40"`
+	LastName  string `json:"last_name" validate:"required,min=2,max=40"`
+	Password  string `json:"password" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
+	Phone     string `json:"phone" validate:"required"`
 }
 
 type Product struct {
@@ -28,22 +24,26 @@ type Product struct {
 }
 
 type Order struct {
-	ID     uint        `gorm:"primary_key;index:idx_name,unique"`
-	User   User        `json:"user"`
-	UserID uint        `json:"user_id"`
-	Items  []OrderItem `json:"order_items" gorm:"many2many:order_items;"`
-	Price  float64     `json:"price"`
+	ID     uint       `gorm:"primary_key;index:idx_name,unique"`
+	User   User       `json:"user"`
+	UserID uint       `json:"user_id"`
+	Items  []CartItem `json:"order_items" gorm:"many2many:order_items;"`
+	Price  float64    `json:"price"`
 }
 
-type OrderItem struct {
+type CartItem struct {
 	ID        uint    `gorm:"primary_key;index:idx_name,unique"`
-	User      User    `json:"user"`
 	UserID    uint    `json:"user_id"`
-	Order     Order   `json:"order"`
-	OrderID   uint    `json:"order_id"`
-	ProductID uint    `json:"product_id"`
+	ProductID uint    `json:"product_id" gorm:"index;default:2"`
 	Product   Product `json:"product"`
 	Quantity  uint    `json:"quantity"`
+}
+
+type Cart struct {
+	ID       uint       `gorm:"primary_key;index:idx_name,unique"`
+	User     User       `json:"user"`
+	UserID   uint       `json:"user_id"`
+	Products []CartItem `json:"products" gorm:"many2many:product_carts;"`
 }
 
 type Categories struct {

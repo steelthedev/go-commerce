@@ -38,12 +38,94 @@ definitions:
       phone:
         type: string
     type: object
+  cart.AddProduct:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  models.Cart:
+    properties:
+      id:
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/models.CartItem'
+        type: array
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        type: integer
+    type: object
+  models.CartItem:
+    properties:
+      id:
+        type: integer
+      order:
+        $ref: '#/definitions/models.Order'
+      order_id:
+        type: integer
+      product:
+        $ref: '#/definitions/models.Product'
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        type: integer
+    type: object
   models.Categories:
     properties:
       id:
         type: integer
       title:
         type: string
+    type: object
+  models.Order:
+    properties:
+      id:
+        type: integer
+      order_items:
+        items:
+          $ref: '#/definitions/models.CartItem'
+        type: array
+      price:
+        type: number
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        type: integer
+    type: object
+  models.Product:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      main_image:
+        type: string
+      price:
+        type: number
+      product_category:
+        items:
+          $ref: '#/definitions/models.Categories'
+        type: array
+      store:
+        $ref: '#/definitions/models.Stores'
+      store_id:
+        type: integer
+      sub_images:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    required:
+    - description
+    - title
     type: object
   models.Stores:
     properties:
@@ -201,6 +283,35 @@ paths:
       summary: Create Users
       tags:
       - Accounts
+  /cart/add-to-cart:
+    post:
+      description: Add a product to cart
+      parameters:
+      - description: Token for Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Token for Authorization
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/cart.AddProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Add to Cart
+      tags:
+      - Cart
   /products/get-all:
     get:
       description: Retrieve a list of all products

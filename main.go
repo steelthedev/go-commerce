@@ -2,11 +2,11 @@ package main
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/steelthedev/go-commerce/connections/db"
 
 	"github.com/steelthedev/go-commerce/package/accounts"
+	"github.com/steelthedev/go-commerce/package/cart"
 	"github.com/steelthedev/go-commerce/package/products"
 	"github.com/steelthedev/go-commerce/package/stores"
 
@@ -25,8 +25,8 @@ import (
 // @BasePath /
 func main() {
 
-	dbURL := string(os.Getenv("DB_URL"))
-
+	// dbURL := string(os.Getenv("DB_URL"))
+	dbURL := "postgres://steel:akinwumi1914@localhost:5432/marketplace"
 	router := gin.Default()
 	dbHandler := db.Init(dbURL)
 
@@ -48,5 +48,6 @@ func main() {
 	accounts.RegisterRoutes(router, dbHandler)
 	products.RegisterRoutes(router, dbHandler)
 	stores.RegisterRoutes(router, dbHandler)
+	cart.RegisterRoutes(router, dbHandler)
 	router.Run(":8000")
 }

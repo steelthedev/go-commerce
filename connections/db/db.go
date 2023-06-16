@@ -25,8 +25,10 @@ func Init(url string) *gorm.DB {
 	db.AutoMigrate(&models.Product{})
 	db.AutoMigrate(&models.Stores{})
 	db.AutoMigrate(&models.Order{})
-	db.AutoMigrate(&models.OrderItem{})
+	db.AutoMigrate(&models.CartItem{})
+	db.AutoMigrate(&models.Cart{})
 	// db.AutoMigrate(&models.Address{})
+
 	// db.AutoMigrate(&models.Payment{})
 
 	return db
