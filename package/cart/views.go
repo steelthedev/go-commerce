@@ -266,3 +266,40 @@ func (h handler) RemoveFromCart(c *gin.Context) {
 	})
 
 }
+
+func (h handler) BuyfromCart(c *gin.Context) {
+
+	_, err := accounts.IsAuthenticated(c)
+	if err != nil {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "User not authorized",
+			"state":   false,
+		})
+	}
+
+	// get user id
+
+	userId, err := tokens.ExtractTokenID(c)
+
+	if err != nil {
+		c.AbortWithStatusJSON(500, gin.H{
+			"message": "User ID not found",
+			"status":  false,
+		})
+	}
+	// get cart
+	var userCart models.Cart
+
+	if err := h.DB.Where("user_id=?", userId).Preload("User").Preload("Products.Product").First(&userCart).Error; err != nil {
+
+		c.AbortWithStatusJSON(500, gin.H{
+			"message": "Could not fetch cart",
+			"state":   false,
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// Make payment with paystack
+
+}

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/steelthedev/go-commerce/connections/tokens"
 )
 
 func AddMultipleImage(c *gin.Context, Images []*multipart.FileHeader) ([]string, error) {
@@ -89,4 +90,14 @@ func AddSingleImage(c *gin.Context, n string) (string, error) {
 	}
 
 	return filePath, nil
+}
+
+func GetUserId(c *gin.Context) (id uint, err error) {
+	id, err = tokens.ExtractTokenID(c)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
