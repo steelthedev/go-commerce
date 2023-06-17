@@ -7,6 +7,7 @@ import (
 
 	"github.com/steelthedev/go-commerce/package/accounts"
 	"github.com/steelthedev/go-commerce/package/cart"
+	"github.com/steelthedev/go-commerce/package/orders"
 	"github.com/steelthedev/go-commerce/package/products"
 	"github.com/steelthedev/go-commerce/package/stores"
 
@@ -49,5 +50,6 @@ func main() {
 	products.RegisterRoutes(router, dbHandler)
 	stores.RegisterRoutes(router, dbHandler)
 	cart.RegisterRoutes(router, dbHandler)
+	orders.RegisterRoutes(router, dbHandler)
 	router.Run(":8000")
 }

@@ -24,11 +24,15 @@ type Product struct {
 }
 
 type Order struct {
-	ID     uint       `gorm:"primary_key;index:idx_name,unique"`
-	User   User       `json:"user"`
-	UserID uint       `json:"user_id"`
-	Items  []CartItem `json:"order_items" gorm:"many2many:order_items;"`
-	Price  float64    `json:"price"`
+	ID        uint       `gorm:"primary_key;index:idx_name,unique"`
+	User      User       `json:"user"`
+	UserID    uint       `json:"user_id"`
+	Items     []CartItem `json:"order_items" gorm:"many2many:order_items;"`
+	Price     float64    `json:"price"`
+	Paid      bool       `json:"paid"`
+	Delivered bool       `json:"delivered"`
+	Payment   Payment    `json:"payment"`
+	PaymentID uint       `json:"payment_id"`
 }
 
 type CartItem struct {
@@ -44,6 +48,7 @@ type Cart struct {
 	User     User       `json:"user"`
 	UserID   uint       `json:"user_id"`
 	Products []CartItem `json:"products" gorm:"many2many:product_carts;"`
+	Price    float64    `json:"price"`
 }
 
 type Categories struct {
@@ -57,4 +62,17 @@ type Stores struct {
 	User   User   `json:"owner"`
 	UserId uint   `json:"user_id"`
 	Image  string `json:"image"`
+}
+
+type PaymentType string
+
+const (
+	PaymentTypeCard   PaymentType = "Card"
+	PaymentTypePaypal PaymentType = "Paypal"
+)
+
+type Payment struct {
+	ID     uint        `gorm:"primary_key;index:idx_name,unique"`
+	Type   PaymentType `json:"type"`
+	Amount float64     `json:"amount"`
 }

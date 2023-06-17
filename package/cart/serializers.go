@@ -11,6 +11,7 @@ type CartSerializer struct {
 	ID       uint              `json:"id"`
 	UserID   uint              `json:"user_id"`
 	Products []models.CartItem `json:"products"`
+	Price    float64           `json:"price"`
 }
 
 type ProductCartSerializer struct {

@@ -2,6 +2,7 @@ package cart
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/steelthedev/go-commerce/connections/models"
@@ -121,8 +122,17 @@ func (h handler) AddToCart(c *gin.Context) {
 	}
 
 	//add the cartItem to cart
-
+	// total := CalculateCartTotal(&userCart)
 	userCart.Products = append(userCart.Products, cartItem)
+
+	var total float64
+
+	for _, item := range userCart.Products {
+		subtotal := float64(item.Quantity) * item.Product.Price
+		total += subtotal
+	}
+
+	userCart.Price = float64(total)
 
 	if result := h.DB.Save(&userCart); result.Error != nil {
 
@@ -138,6 +148,7 @@ func (h handler) AddToCart(c *gin.Context) {
 		Products: userCart.Products,
 		UserID:   userCart.UserID,
 		ID:       userCart.ID,
+		Price:    userCart.Price,
 	}
 
 	c.IndentedJSON(200, &cartData)
@@ -179,4 +190,79 @@ func (h handler) GetUserCart(c *gin.Context) {
 	}
 
 	c.IndentedJSON(200, &userCart)
+}
+
+func (h handler) RemoveFromCart(c *gin.Context) {
+	_, err := accounts.IsAuthenticated(c)
+
+	if err != nil {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "Unathourized User",
+			"state":   false,
+		})
+		return
+	}
+
+	//get userId
+
+	userId, err := tokens.ExtractTokenID(c)
+
+	if err != nil {
+		c.AbortWithStatusJSON(500, gin.H{
+			"message": "User Id not found",
+			"state":   false,
+		})
+		return
+	}
+	// get id from url
+
+	ProductId, ok := c.Params.Get("id")
+	if !ok {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "Product Id not found",
+			"state":   false,
+		})
+		return
+	}
+
+	ProductID, err := strconv.Atoi(ProductId)
+
+	var userCart models.Cart
+
+	//get userCart
+
+	if result := h.DB.Where("user_id", userId).Preload("Products").First(&userCart); result.Error != nil {
+		c.AbortWithStatusJSON(500, gin.H{
+			"message": "Use Cart not found",
+			"state":   false,
+		})
+		return
+	}
+
+	//get CartItem
+	var cartItem models.CartItem
+
+	for _, item := range userCart.Products {
+		if item.ProductID == uint(ProductID) {
+			cartItem = item
+			break
+		}
+	}
+
+	//delete cartItem
+
+	if result := h.DB.Delete(&cartItem); result.Error != nil {
+		c.AbortWithStatusJSON(500, gin.H{
+			"message": "Could not remove item from cart",
+			"state":   false,
+			"error":   result.Error.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Item removed from cart",
+		"state":   true,
+	})
+
 }

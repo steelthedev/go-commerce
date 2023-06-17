@@ -16,5 +16,7 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 
 	routes := router.Group("/cart")
 	routes.POST("/add-to-cart", h.AddToCart)
+	routes.POST("/remove-from-cart/:id", h.RemoveFromCart)
 	routes.GET("/get-user-cart", h.GetUserCart)
+
 }
