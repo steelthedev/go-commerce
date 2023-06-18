@@ -9,4 +9,4 @@ An e-commerce microservice written with golang. It provides APIs for the followi
 
 
 
-For documentation, please visit
+For documentation, please visit https://go-commerce.onrender.com/swagger/index.html
