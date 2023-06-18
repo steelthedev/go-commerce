@@ -73,6 +73,7 @@ func (h handler) CreateStore(c *gin.Context) {
 			"state":   false,
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	store.Image = image

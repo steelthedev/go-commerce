@@ -49,6 +49,8 @@ definitions:
     properties:
       id:
         type: integer
+      price:
+        type: number
       products:
         items:
           $ref: '#/definitions/models.CartItem'
@@ -62,18 +64,12 @@ definitions:
     properties:
       id:
         type: integer
-      order:
-        $ref: '#/definitions/models.Order'
-      order_id:
-        type: integer
       product:
         $ref: '#/definitions/models.Product'
       product_id:
         type: integer
       quantity:
         type: integer
-      user:
-        $ref: '#/definitions/models.User'
       user_id:
         type: integer
     type: object
@@ -83,21 +79,6 @@ definitions:
         type: integer
       title:
         type: string
-    type: object
-  models.Order:
-    properties:
-      id:
-        type: integer
-      order_items:
-        items:
-          $ref: '#/definitions/models.CartItem'
-        type: array
-      price:
-        type: number
-      user:
-        $ref: '#/definitions/models.User'
-      user_id:
-        type: integer
     type: object
   models.Product:
     properties:
@@ -158,10 +139,6 @@ definitions:
         type: string
       phone:
         type: string
-      refresh_token:
-        type: string
-      token:
-        type: string
     required:
     - email
     - first_name
@@ -205,7 +182,7 @@ definitions:
       store_name:
         type: string
     type: object
-host: localhost:8000
+host: https://go-commerce.onrender.com
 info:
   contact: {}
   description: A golang microservice for ecommerce

@@ -358,6 +358,9 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "price": {
+                    "type": "number"
+                },
                 "products": {
                     "type": "array",
                     "items": {
@@ -378,12 +381,6 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "order": {
-                    "$ref": "#/definitions/models.Order"
-                },
-                "order_id": {
-                    "type": "integer"
-                },
                 "product": {
                     "$ref": "#/definitions/models.Product"
                 },
@@ -392,9 +389,6 @@ const docTemplate = `{
                 },
                 "quantity": {
                     "type": "integer"
-                },
-                "user": {
-                    "$ref": "#/definitions/models.User"
                 },
                 "user_id": {
                     "type": "integer"
@@ -409,29 +403,6 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
-                }
-            }
-        },
-        "models.Order": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "order_items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.CartItem"
-                    }
-                },
-                "price": {
-                    "type": "number"
-                },
-                "user": {
-                    "$ref": "#/definitions/models.User"
-                },
-                "user_id": {
-                    "type": "integer"
                 }
             }
         },
@@ -528,12 +499,6 @@ const docTemplate = `{
                 },
                 "phone": {
                     "type": "string"
-                },
-                "refresh_token": {
-                    "type": "string"
-                },
-                "token": {
-                    "type": "string"
                 }
             }
         },
@@ -598,7 +563,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8000",
+	Host:             "https://go-commerce.onrender.com",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "An ecommerce Api",
