@@ -563,9 +563,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "https://go-commerce.onrender.com",
+	Host:             "go-commerce.onrender.com",
 	BasePath:         "/",
-	Schemes:          []string{},
+	Schemes:          []string{"https"},
 	Title:            "An ecommerce Api",
 	Description:      "A golang microservice for ecommerce",
 	InfoInstanceName: "swagger",

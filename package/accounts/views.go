@@ -73,7 +73,11 @@ func (h handler) Login(c *gin.Context) {
 	body := LoginSerializer{}
 
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid body request",
+			"state":   false,
+		})
+		return
 	}
 
 	user := models.User{}
@@ -84,7 +88,10 @@ func (h handler) Login(c *gin.Context) {
 	token, err := LoginCheck(h.DB, user.Email, user.Password)
 
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid details",
+			"state":   false,
+		})
 		return
 	}
 

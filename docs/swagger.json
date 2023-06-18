@@ -1,4 +1,7 @@
 {
+    "schemes": [
+        "https"
+    ],
     "swagger": "2.0",
     "info": {
         "description": "A golang microservice for ecommerce",
@@ -6,7 +9,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "https://go-commerce.onrender.com",
+    "host": "go-commerce.onrender.com",
     "basePath": "/",
     "paths": {
         "/accounts/login": {

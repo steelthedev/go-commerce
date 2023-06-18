@@ -182,7 +182,7 @@ definitions:
       store_name:
         type: string
     type: object
-host: https://go-commerce.onrender.com
+host: go-commerce.onrender.com
 info:
   contact: {}
   description: A golang microservice for ecommerce
@@ -363,4 +363,6 @@ paths:
       summary: Get a user store
       tags:
       - Stores
+schemes:
+- https
 swagger: "2.0"

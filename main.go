@@ -25,7 +25,8 @@ import (
 // @version 1.0
 // @description A golang microservice for ecommerce
 
-// @host 	https://go-commerce.onrender.com
+// @host go-commerce.onrender.com
+// @schemes https
 // @BasePath /
 func main() {
 	err := godotenv.Load("local.env")
